@@ -48,4 +48,11 @@ class Valores {
         this.projeto = projeto;
     }
 
+    @Override
+    public String toString() {
+        return "Nome: " + getFuncionario() + " projeto " + getProjeto() + " data " + getData() + " horas " + getHorasTrabalhadas(); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    
+
 }
