@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import org.apache.commons.io.FilenameUtils;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,7 +19,8 @@ public class Main {
         List<Valores> teste = new ArrayList();
 
         for (File file : files) {
-            if (FilenameUtils.getExtension(file.getName()).toLowerCase().equals("xls") || FilenameUtils.getExtension(file.getName()).toLowerCase().equals("xlsx")) {
+            System.out.println(file.getName());
+            if (verificaExtensao(file)) {
                 try {
                     teste.addAll(planilha.carregaValoresDoExcelEmLista(file.getPath()));
                 } catch (IOException ex) {
@@ -30,8 +30,8 @@ public class Main {
             }
 
         }
-        String resultado;
-        System.out.println(resultado = Relatorio.geraRelatorio(teste));
+
+        System.out.println(Relatorio.geraRelatorio(teste));
         Relatorio.writeToFile(teste);
 //        System.out.println(somahoras.somarHoras(linhaPlanilha));
 //        System.out.println(somahoras.somarHorasFuncionario(linhaPlanilha, "Giovanny Azevedo"));
@@ -40,6 +40,10 @@ public class Main {
 //        System.out.println(planilha.carregaFuncionarios(linhaPlanilha).toString());
 //        System.out.println(planilha.carregaProjetos(linhaPlanilha).toString());
 //        
+    }
+
+    private static boolean verificaExtensao(File file) {
+        return FilenameUtils.getExtension(file.getName()).toLowerCase().equals("xls") || FilenameUtils.getExtension(file.getName()).toLowerCase().equals("xlsx");
     }
 
 }

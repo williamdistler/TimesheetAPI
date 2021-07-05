@@ -49,7 +49,7 @@ public class Utils {
         int somaMinutos = 0;
         for (int i = 0; i < linhaPlanilha.size(); i++) {
             if (linhaPlanilha.get(i).getFuncionario().toUpperCase().equals(nomeFuncionario.toUpperCase())) {
-                somaMinutos += getTempoEmMinutos(linhaPlanilha.get(i).getHorasTrabalhadas());
+                somaMinutos += stringParaMinutos(linhaPlanilha.get(i).getHorasTrabalhadas());
             }
         }
         return somaMinutos;
@@ -58,7 +58,7 @@ public class Utils {
     public static Integer somarHorasSemFiltro(List<Valores> linhaPlanilha) {
         int somaMinutos = 0;
         for (int i = 0; i < linhaPlanilha.size(); i++) {
-            somaMinutos += getTempoEmMinutos(linhaPlanilha.get(i).getHorasTrabalhadas());
+            somaMinutos += stringParaMinutos(linhaPlanilha.get(i).getHorasTrabalhadas());
         }
         return somaMinutos;
     }
@@ -67,7 +67,7 @@ public class Utils {
         int somaMinutos = 0;
         for (int i = 0; i < linhaPlanilha.size(); i++) {
             if (linhaPlanilha.get(i).getProjeto().toUpperCase().equals(projeto.toUpperCase())) {
-                somaMinutos += getTempoEmMinutos(linhaPlanilha.get(i).getHorasTrabalhadas());
+                somaMinutos += stringParaMinutos(linhaPlanilha.get(i).getHorasTrabalhadas());
             }
         }
         return somaMinutos;
@@ -77,7 +77,7 @@ public class Utils {
         int somaMinutos = 0;
         for (int i = 0; i < linhaPlanilha.size(); i++) {
             if (linhaPlanilha.get(i).getProjeto().toUpperCase().equals(projeto.toUpperCase()) && linhaPlanilha.get(i).getFuncionario().toUpperCase().equals(funcionario.toUpperCase())) {
-                somaMinutos += getTempoEmMinutos(linhaPlanilha.get(i).getHorasTrabalhadas());
+                somaMinutos += stringParaMinutos(linhaPlanilha.get(i).getHorasTrabalhadas());
             }
         }
         return somaMinutos;
@@ -87,7 +87,7 @@ public class Utils {
         return LocalTime.MIN.plus(Duration.ofMinutes(minutos)).toString();
     }
 
-    private static int getTempoEmMinutos(String horas) throws NumberFormatException {
+    private static int stringParaMinutos(String horas) throws NumberFormatException {
         String[] horasMinutos = horas.split(":");
         int horaMinuto = Integer.parseInt(horasMinutos[0]) * 60;
         int minutos = Integer.parseInt(horasMinutos[1]);
