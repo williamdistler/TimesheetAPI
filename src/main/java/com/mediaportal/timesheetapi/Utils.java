@@ -5,6 +5,7 @@
  */
 package com.mediaportal.timesheetapi;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalTime;
@@ -32,7 +33,7 @@ public class Utils {
     public static Set<String> carregaProjetos(List<Valores> linhas) {
         Set<String> projetos = new HashSet<String>();
         for (int i = 0; i < linhas.size(); i++) {
-            projetos.add(linhas.get(i).getProjeto());
+            projetos.add(linhas.get(i).getIdProjeto());
         }
         return projetos;
     }
@@ -66,7 +67,7 @@ public class Utils {
     public static Integer somarHorasProjeto(List<Valores> linhaPlanilha, String projeto) {
         int somaMinutos = 0;
         for (int i = 0; i < linhaPlanilha.size(); i++) {
-            if (linhaPlanilha.get(i).getProjeto().toUpperCase().equals(projeto.toUpperCase())) {
+            if (linhaPlanilha.get(i).getIdProjeto().toUpperCase().equals(projeto.toUpperCase())) {
                 somaMinutos += stringParaMinutos(linhaPlanilha.get(i).getHorasTrabalhadas());
             }
         }
@@ -86,6 +87,11 @@ public class Utils {
     public static String minutosParaHoras(Integer minutos) {
         return LocalTime.MIN.plus(Duration.ofMinutes(minutos)).toString();
     }
+    
+    public static String decimalFortmat(Double num){
+        DecimalFormat df = new DecimalFormat("0.00");
+        return df.format(num);
+    }
 
     private static int stringParaMinutos(String horas) throws NumberFormatException {
         String[] horasMinutos = horas.split(":");
@@ -94,5 +100,7 @@ public class Utils {
         int soma = horaMinuto + minutos;
         return soma;
     }
+    
+    
 
 }

@@ -39,10 +39,10 @@ public class Relatorio {
         String resultado = "";
 
         resultado += "-------Funcionários------" + System.lineSeparator();
-        resultado = funcionario.stream().map((func) -> func + ": " + Utils.somarHorasFuncionario(lista, func)/60.0 + " horas trabalhadas no total" + System.lineSeparator()).reduce(resultado, String::concat);
+        resultado = funcionario.stream().map((func) -> func + ": " + Utils.decimalFortmat(Utils.somarHorasFuncionario(lista, func)/60.0) + " horas trabalhadas no total" + System.lineSeparator()).reduce(resultado, String::concat);
 
         resultado += System.lineSeparator() + "---------Projetos--------" + System.lineSeparator();
-        resultado = projeto.stream().map((proj) -> proj + ": " + Utils.somarHorasProjeto(lista, proj)/60.0 + " horas de projeto no total" + System.lineSeparator()).reduce(resultado, String::concat);
+        resultado = projeto.stream().map((proj) -> proj + ": " + Utils.decimalFortmat(Utils.somarHorasProjeto(lista, proj)/60.0) + " horas de projeto no total" + System.lineSeparator()).reduce(resultado, String::concat);
 
         resultado += System.lineSeparator() + "---------Warnings--------" + System.lineSeparator();
         resultado = warnings.stream().map((warn) -> warn + System.lineSeparator()).reduce(resultado, String::concat);
