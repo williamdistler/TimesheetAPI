@@ -88,7 +88,7 @@ public class Utils {
         return LocalTime.MIN.plus(Duration.ofMinutes(minutos)).toString();
     }
     
-    public static String decimalFortmat(Double num){
+    public static String decimalFormat(Double num){
         DecimalFormat df = new DecimalFormat("0.00");
         return df.format(num);
     }
