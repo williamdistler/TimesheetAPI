@@ -20,7 +20,17 @@ import org.apache.poi.hssf.usermodel.HSSFDateUtil;
  * @author Media Portal
  */
 public class Utils {
-
+    
+    public static int getDateAno(Date date) {
+        int ano = date.getYear();
+        return ano;
+    }
+    
+    public static int getDateMes(Date date) {
+        int mes = date.getMonth();
+        return mes;
+    }
+    
     public static String dateFormat(Date date) {
         SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");
         return formatador.format(date);

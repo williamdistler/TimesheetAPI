@@ -1,0 +1,18 @@
+-------Funcionários------
+William: 62.5 horas trabalhadas no total
+Vinicius de Santana: 42.333333333333336 horas trabalhadas no total
+
+---------Projetos--------
+ADMIN: 22.5 horas de projeto no total
+SUA122: 17.0 horas de projeto no total
+MXP100: 13.0 horas de projeto no total
+SUA110: 52.333333333333336 horas de projeto no total
+
+---------Warnings--------
+No dia 03/06/2021, o funcionario William trabalhou 1:0 horas!
+No dia 04/06/2021, o funcionario William trabalhou 1:0 horas!
+No dia 11/06/2021, o funcionario William trabalhou 1:30 horas!
+No dia 18/06/2021, o funcionario William trabalhou 0:30 horas!
+
+-----------ERROS----------
+Não foi possivel abrir o arquivo: Timesheet_-_Vinicius-_20210531.xls

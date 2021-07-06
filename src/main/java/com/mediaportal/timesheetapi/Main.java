@@ -1,6 +1,9 @@
 package com.mediaportal.timesheetapi;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,8 +13,8 @@ import java.util.logging.Logger;
 
 public class Main {
 
-    public static void main(String[] args) {
-
+    public static void main(String[] args) throws FileNotFoundException, IOException {
+        
         Planilha planilha = new Planilha();
 
         File folder = new File("C:\\Users\\Media Portal\\Desktop\\Planilhas\\");

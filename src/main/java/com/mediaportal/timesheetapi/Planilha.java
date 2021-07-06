@@ -23,6 +23,15 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class Planilha {
+    
+    File arquivo = new File("C:\\Users\\Media Portal\\Desktop\\Planilhas\\config.txt");
+        
+    public static String verificaData(File arquivo) throws FileNotFoundException, IOException {
+        BufferedReader br = new BufferedReader(new FileReader(arquivo));
+        String data = br.readLine();
+        //System.out.println(data);
+        return data;
+    }
 
     public List<Valores> carregaValoresDoExcelEmLista(String path) throws IOException {
 
@@ -140,9 +149,17 @@ public class Planilha {
 
         Date data = null;
         String dataFormatada = "";
-
+        
         try {
+            int mes = Integer.parseInt(verificaData(arquivo).substring(4));
+            int ano = Integer.parseInt(verificaData(arquivo).substring(0, 4));
             dataFormatada = formataData(doubleData);
+            int mesPlanilha = getDateMes(doubleData);
+            int anoPlanilha = getDateAno(doubleData);
+            if(!mes.equals(mesPlanilha) || !ano.equals(anoPlanilha))
+                throw new Exeption();
+            else
+                continue;
         } catch (Exception e) {
             Relatorio.errors.add("Data inválida ");
             return null;
