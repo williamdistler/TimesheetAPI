@@ -1,0 +1,70 @@
+-------Funcionários------
+Itiel Faustino Da Silva: 134,00 horas trabalhadas no total
+Giovanny Azevedo: 115,08 horas trabalhadas no total
+William: 104,00 horas trabalhadas no total
+
+
+---------Projetos--------
+MXP100: 66,33 horas de projeto no total
+MXP119: 0,25 horas de projeto no total
+SUA104: 3,25 horas de projeto no total
+SUA105: 15,83 horas de projeto no total
+ADMIN: 103,92 horas de projeto no total
+SUA103: 5,00 horas de projeto no total
+SUA114: 1,42 horas de projeto no total
+SUA136: 5,67 horas de projeto no total
+SUA100: 0,08 horas de projeto no total
+SUA122: 3,00 horas de projeto no total
+SUA134: 4,00 horas de projeto no total
+SUA123: 7,67 horas de projeto no total
+SUA101: 1,67 horas de projeto no total
+SUA131: 59,33 horas de projeto no total
+SUP118: 1,67 horas de projeto no total
+SUA110: 73,33 horas de projeto no total
+SUA132: 0,67 horas de projeto no total
+
+
+---------Projetos/Funcionario--------
+Itiel Faustino Da Silva/MXP100: 9,00
+Itiel Faustino Da Silva/SUA104: 3,25
+Itiel Faustino Da Silva/SUA105: 15,83
+Itiel Faustino Da Silva/ADMIN: 39,33
+Itiel Faustino Da Silva/SUA103: 5,00
+Itiel Faustino Da Silva/SUA114: 1,42
+Itiel Faustino Da Silva/SUA136: 5,67
+Itiel Faustino Da Silva/SUA100: 0,08
+Itiel Faustino Da Silva/SUA122: 3,00
+Itiel Faustino Da Silva/SUA134: 4,00
+Itiel Faustino Da Silva/SUA123: 7,67
+Itiel Faustino Da Silva/SUA101: 1,67
+Itiel Faustino Da Silva/SUA131: 31,00
+Itiel Faustino Da Silva/SUP118: 1,67
+Itiel Faustino Da Silva/SUA110: 4,75
+Itiel Faustino Da Silva/SUA132: 0,67
+Giovanny Azevedo/MXP100: 18,33
+Giovanny Azevedo/MXP119: 0,25
+Giovanny Azevedo/ADMIN: 28,58
+Giovanny Azevedo/SUA131: 28,33
+Giovanny Azevedo/SUA110: 39,58
+William/MXP100: 39,00
+William/ADMIN: 36,00
+William/SUA110: 29,00
+
+
+---------Warnings--------
+No dia 21/05/2021, o funcionario Itiel Faustino Da Silva trabalhou 10:0 horas. Arquivo: Timesheet - Itiel_20210517.xls
+No dia 24/05/2021, o funcionario Itiel Faustino Da Silva trabalhou 13:20 horas. Arquivo: Timesheet - Itiel_20210524.xls
+No dia 25/05/2021, o funcionario Itiel Faustino Da Silva trabalhou 10:0 horas. Arquivo: Timesheet - Itiel_20210524.xls
+No dia 14/05/2021, o funcionario William trabalhou 1:30 horas. Arquivo: Timesheet - William - 20210510.xls
+No dia 11/05/2021, o funcionario Giovanny Azevedo trabalhou 10:5 horas. Arquivo: Timesheet-GIOVANNY _20210510(Revisado).xls
+No dia 23/05/2021, o funcionario Giovanny Azevedo trabalhou 1:30 horas. Arquivo: Timesheet-GIOVANNY _20210517(Revisado).xls
+No dia 26/05/2021, o funcionario Giovanny Azevedo trabalhou 10:55 horas. Arquivo: Timesheet-GIOVANNY _20210524(Revisado).xls
+No dia 27/05/2021, o funcionario Giovanny Azevedo trabalhou 11:25 horas. Arquivo: Timesheet-GIOVANNY _20210524(Revisado).xls
+
+
+-----------ERROS----------
+Relatório com formato inválido: Planilha_Atividades-GIOVANNY-20210510(Revisado).xls
+Relatório com formato inválido: Planilha_Atividades-GIOVANNY-20210517(Revisado).xls
+Relatório com formato inválido: Planilha_Atividades-GIOVANNY-20210524(Revisado).xls
+Relatório com formato inválido: Planilha_Atividades-GIOVANNY-20210531(Revisado).xls
+Relatório com formato inválido: Relatório Semanal - William - AAAAMMDD.xlsx

@@ -14,7 +14,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -30,29 +29,141 @@ public class Planilha {
         FileInputStream reader = new FileInputStream(file);
         Workbook wb = null;
         String extension = FilenameUtils.getExtension(path);
+        
+        String filename = FilenameUtils.getName(path);
 
         if (extension.toUpperCase().equals("XLS")) {
             try {
                 wb = new HSSFWorkbook(reader);
             } catch (Exception e) {
-                Relatorio.errors.add("Não foi possivel abrir o arquivo: " + FilenameUtils.getName(path));
+                Relatorio.errors.add("Não foi possivel abrir o arquivo: " + filename);
                 return Collections.emptyList();
             }
         } else if (extension.toUpperCase().equals("XLSX")) {
             try {
                 wb = new XSSFWorkbook(reader);
             } catch (Exception e) {
-                Relatorio.errors.add("Não foi possivel abrir o arquivo: " + FilenameUtils.getName(path));
+                Relatorio.errors.add("Não foi possivel abrir o arquivo: " + filename);
                 return Collections.emptyList();
             }
 
         }
         Sheet sheet = wb.getSheetAt(0);
+        
+        int numLinhaInicialExcel = getLinhasInicalDoExcel(sheet);
+        int numLinhaFinalExcel = getLinhasFinalDoExcel(sheet);
 
-        int numeroDeLinhas = getNumDeLinhasDoExcel(sheet);
+        if (numLinhaFinalExcel == 0 || numLinhaInicialExcel == 0) {
+            Relatorio.errors.add("Relatório com formato inválido: " + filename);
+            return Collections.emptyList();
+        }
 
-        List<Valores> valoresDoExcel = carregaDados(sheet, numeroDeLinhas);
+        List<Valores> valoresDoExcel = carregaDados(sheet, filename ,numLinhaInicialExcel, numLinhaFinalExcel);
         return valoresDoExcel;
+    }
+
+    private List<Valores> carregaDados(Sheet sheet, String filename, int numLinhaInicial, int numLinhaFinal) throws IOException {
+        List<Valores> listaDeValoresDoExcel = new ArrayList();
+
+        //System.out.println(numeroDeLinhas);
+        for (int coluna = 2; coluna < 9; coluna++) {
+            String nomeFuncionario = null;
+            Double doubleData = null;
+            Double doubleHorasTrabalhadas;
+            String idProjeto;
+            String projeto;
+
+            for (int linha = numLinhaInicial; linha < numLinhaFinal; linha++) {
+                Double lerCelulaDouble = lerCelulaDouble(sheet, linha, coluna);
+                String lerCelulaString = lerCelulaString(sheet, linha, coluna);
+                //System.out.println("double " + lerCelulaDouble + "String " + lerCelulaString);
+                if (lerCelulaDouble != 0.0 && !lerCelulaString.equals("*")) {
+                    try {
+                        nomeFuncionario = lerCelulaString(sheet, 3, 1);
+                        doubleData = lerCelulaDouble(sheet, numLinhaInicial - 1, coluna);
+                        doubleHorasTrabalhadas = lerCelulaDouble(sheet, linha, coluna);
+                        idProjeto = lerCelulaString(sheet, linha, 0);
+                        projeto = lerCelulaString(sheet, linha, 1);
+
+                        listaDeValoresDoExcel.addAll(insereValoresNaLista(nomeFuncionario, doubleData, doubleHorasTrabalhadas, idProjeto, projeto));
+                    } catch (Exception e) {
+                        Relatorio.errors.add("Erro na coluna: " + (coluna + 1) + " linha: " + (linha + 1) + " da planilha: " + filename);
+                        return null;
+                    }
+                }
+            }
+            String totalDia = Utils.getHorasHHMM(lerCelulaDouble(sheet, numLinhaFinal, coluna));
+            Integer horas = Integer.parseInt(totalDia.split(":")[0]);
+            if (doubleData != null && horas <= 2 || horas >= 10) {
+                Relatorio.warnings.add("No dia " + Utils.formatDoubleToDate(doubleData) + ", o funcionario " + nomeFuncionario + " trabalhou " + totalDia + " horas. Arquivo: " + filename);
+            }
+        }
+
+        return listaDeValoresDoExcel;
+    }
+
+    private List<Valores> insereValoresNaLista(String nomeFuncionario, Double doubleData, Double doubleHorasTrabalhadas, String idProjeto, String projeto) {
+        List<Valores> listaDeValoresDoExcel = new ArrayList();
+        Valores valores = new Valores();
+
+        Date data = null;
+        String dataFormatada = "";
+
+        try {
+            dataFormatada = Utils.formatDoubleToDate(doubleData);
+        } catch (Exception e) {
+            Relatorio.errors.add("Data inválida ");
+            return Collections.emptyList();
+        }
+
+        String horasTrabalhadas = Utils.getHorasHHMM(doubleHorasTrabalhadas);
+
+        valores.setFuncionario(nomeFuncionario);
+        valores.setData(dataFormatada);
+        valores.setHorasTrabalhadas(horasTrabalhadas);
+        valores.setIdProjeto(idProjeto);
+        valores.setProjeto(projeto);
+        listaDeValoresDoExcel.add(valores);
+        return listaDeValoresDoExcel;
+        //System.out.println("FUNC: " + valores.getFuncionario() + "DATA: " + valores.getData() + " HORAS: " + valores.getHorasTrabalhadas() + " " + valores.getIdProjeto() + " " + valores.getProjeto());
+    }
+
+    private int getLinhasInicalDoExcel(Sheet sheet) throws IOException {
+        int linhaAtual = 0;
+        String valorDaCelula = "";
+        int numeroDeLinhas = 0;
+        while (true) {
+            valorDaCelula = lerCelulaString(sheet, linhaAtual, 9).toUpperCase();
+            linhaAtual++;
+            if (valorDaCelula.equalsIgnoreCase("TOTAL")) {
+                numeroDeLinhas = linhaAtual - 1;
+                break;
+            }
+            if (linhaAtual == 50) {
+                numeroDeLinhas = 0;
+                break;
+            }
+        }
+        return numeroDeLinhas;
+    }
+
+    private int getLinhasFinalDoExcel(Sheet sheet) throws IOException {
+        int linhaAtual = 0;
+        String valorDaCelula = "";
+        int numeroDeLinhas = 0;
+        while (true) {
+            valorDaCelula = lerCelulaString(sheet, linhaAtual, 0).toUpperCase();
+            linhaAtual++;
+            if (valorDaCelula.equalsIgnoreCase("TOTAL")) {
+                numeroDeLinhas = linhaAtual - 1;
+                break;
+            }
+            if (linhaAtual == 50) {
+                numeroDeLinhas = 0;
+                break;
+            }
+        }
+        return numeroDeLinhas;
     }
 
     private String lerCelulaString(Sheet sheet, int linha, int coluna) throws FileNotFoundException, IOException {
@@ -77,87 +188,6 @@ public class Planilha {
             return cell.getNumericCellValue();
         }
         return 0.0;
-    }
-
-    private int getNumDeLinhasDoExcel(Sheet sheet) throws IOException {
-        int linhaAtual = 0;
-        String valorDaCelula = "";
-        int numeroDeLinhas = 0;
-        while (true) {
-            valorDaCelula = lerCelulaString(sheet, linhaAtual, 0);
-            linhaAtual++;
-            if (valorDaCelula.equalsIgnoreCase("TOTAL")) {
-                numeroDeLinhas = linhaAtual - 1;
-                break;
-            }
-        }
-        return numeroDeLinhas;
-    }
-
-    private List<Valores> carregaDados(Sheet sheet, int numeroDeLinhas) throws IOException {
-        List<Valores> listaDeValoresDoExcel = new ArrayList();
-
-        //System.out.println(numeroDeLinhas);
-        for (int coluna = 2; coluna < 9; coluna++) {
-            String nomeFuncionario = null;
-            Double doubleData = null;
-            Double doubleHorasTrabalhadas;
-            String idProjeto;
-            String projeto;
-
-            for (int linha = 6; linha < numeroDeLinhas; linha++) {
-                Double lerCelulaDouble = lerCelulaDouble(sheet, linha, coluna);
-                String lerCelulaString = lerCelulaString(sheet, linha, coluna);
-                //System.out.println("double " + lerCelulaDouble + "String " + lerCelulaString);
-                if (lerCelulaDouble != 0.0 && !lerCelulaString.equals("*")) {
-                    try {
-                        nomeFuncionario = lerCelulaString(sheet, 3, 1);
-                        doubleData = lerCelulaDouble(sheet, 4, coluna);
-                        doubleHorasTrabalhadas = lerCelulaDouble(sheet, linha, coluna);
-                        idProjeto = lerCelulaString(sheet, linha, 0);
-                        projeto = lerCelulaString(sheet, linha, 1);
-
-                        listaDeValoresDoExcel.addAll(insereValoresNaLista(nomeFuncionario, doubleData, doubleHorasTrabalhadas, idProjeto, projeto));
-                    } catch (Exception e) {
-                        Relatorio.errors.add("Erro na coluna: " + (coluna + 1) + " linha: " + (linha + 1) + " da planilha: " + sheet.getSheetName());
-                        return null;
-                    }
-                }
-            }
-            String totalDia = Utils.getHorasHHMM(lerCelulaDouble(sheet, numeroDeLinhas, coluna));
-            Integer horas = Integer.parseInt(totalDia.split(":")[0]);
-            if (doubleData != null && horas <= 2 || horas >= 10) {
-                Relatorio.warnings.add("No dia " + Utils.formatDoubleToDate(doubleData) + ", o funcionario " + nomeFuncionario + " trabalhou " + totalDia + " horas!");
-            }
-        }
-
-        return listaDeValoresDoExcel;
-    }
-
-    private List<Valores> insereValoresNaLista(String nomeFuncionario, Double doubleData, Double doubleHorasTrabalhadas, String idProjeto, String projeto) {
-        List<Valores> listaDeValoresDoExcel = new ArrayList();
-        Valores valores = new Valores();
-
-        Date data = null;
-        String dataFormatada = "";
-        
-        try {
-            dataFormatada = Utils.formatDoubleToDate(doubleData);
-        } catch (Exception e) {
-            Relatorio.errors.add("Data inválida ");
-            return Collections.emptyList();
-        }
-
-        String horasTrabalhadas = Utils.getHorasHHMM(doubleHorasTrabalhadas);
-
-        valores.setFuncionario(nomeFuncionario);
-        valores.setData(dataFormatada);
-        valores.setHorasTrabalhadas(horasTrabalhadas);
-        valores.setIdProjeto(idProjeto);
-        valores.setProjeto(projeto);
-        listaDeValoresDoExcel.add(valores);
-        return listaDeValoresDoExcel;
-        //System.out.println("FUNC: " + valores.getFuncionario() + "DATA: " + valores.getData() + " HORAS: " + valores.getHorasTrabalhadas() + " " + valores.getIdProjeto() + " " + valores.getProjeto());
     }
 
     @Deprecated

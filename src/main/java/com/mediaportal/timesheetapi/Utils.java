@@ -8,7 +8,9 @@ package com.mediaportal.timesheetapi;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.Month;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -20,7 +22,7 @@ import org.apache.poi.hssf.usermodel.HSSFDateUtil;
  * @author Media Portal
  */
 public class Utils {
-    
+
     public static String dateFormat(Date date) {
         SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");
         return formatador.format(date);
@@ -45,15 +47,57 @@ public class Utils {
         }
         return funcionario;
     }
-    
-    public static Integer somarHorasFuncionario(List<Valores> linhaPlanilha, String nomeFuncionario) {  
+
+    public static Integer somarHorasFuncionario(List<Valores> linhaPlanilha, String nomeFuncionario, Integer mes, Integer ano) {
         int somaMinutos = 0;
         for (int i = 0; i < linhaPlanilha.size(); i++) {
             if (linhaPlanilha.get(i).getFuncionario().toUpperCase().equals(nomeFuncionario.toUpperCase())) {
-                somaMinutos += stringParaMinutos(linhaPlanilha.get(i).getHorasTrabalhadas());
+
+                LocalDate date = stringToLocalDate(linhaPlanilha, i);
+                if (date.getMonth().getValue() == mes && date.getYear() == ano) {
+                    somaMinutos += stringParaMinutos(linhaPlanilha.get(i).getHorasTrabalhadas());
+                }
             }
         }
         return somaMinutos;
+    }
+
+    public static Integer somarHorasProjeto(List<Valores> linhaPlanilha, String projeto, Integer mes, Integer ano) {
+        int somaMinutos = 0;
+        for (int i = 0; i < linhaPlanilha.size(); i++) {
+            if (linhaPlanilha.get(i).getIdProjeto().toUpperCase().equals(projeto.toUpperCase())) {
+                LocalDate date = stringToLocalDate(linhaPlanilha, i);
+                if (date.getMonth().getValue() == mes && date.getYear() == ano) {
+                    somaMinutos += stringParaMinutos(linhaPlanilha.get(i).getHorasTrabalhadas());
+                }
+            }
+        }
+        return somaMinutos;
+    }
+
+    public static Integer somarHorasFuncionarioProjeto(List<Valores> linhaPlanilha, String funcionario, String projeto, Integer mes, Integer ano) {
+        int somaMinutos = 0;
+        for (int i = 0; i < linhaPlanilha.size(); i++) {
+            if (linhaPlanilha.get(i).getIdProjeto().toUpperCase().equals(projeto.toUpperCase()) && linhaPlanilha.get(i).getFuncionario().toUpperCase().equals(funcionario.toUpperCase())) {
+                LocalDate date = stringToLocalDate(linhaPlanilha, i);
+                if (date.getMonth().getValue() == mes && date.getYear() == ano) {
+                    somaMinutos += stringParaMinutos(linhaPlanilha.get(i).getHorasTrabalhadas());
+                }
+            }
+        }
+        return somaMinutos;
+    }
+
+    public static String minutosParaHoras(Integer minutos) {
+        return LocalTime.MIN.plus(Duration.ofMinutes(minutos)).toString();
+    }
+
+    private static LocalDate stringToLocalDate(List<Valores> linhaPlanilha, int i) throws NumberFormatException {
+        Integer day = Integer.parseInt(linhaPlanilha.get(i).getData().substring(0, 2));
+        Integer month = Integer.parseInt(linhaPlanilha.get(i).getData().substring(3, 5));
+        Integer year = Integer.parseInt(linhaPlanilha.get(i).getData().substring(6, 10));
+        LocalDate date = LocalDate.of(year, Month.of(month), day);
+        return date;
     }
 
     public static Integer somarHorasSemFiltro(List<Valores> linhaPlanilha) {
@@ -64,31 +108,7 @@ public class Utils {
         return somaMinutos;
     }
 
-    public static Integer somarHorasProjeto(List<Valores> linhaPlanilha, String projeto) {
-        int somaMinutos = 0;
-        for (int i = 0; i < linhaPlanilha.size(); i++) {
-            if (linhaPlanilha.get(i).getIdProjeto().toUpperCase().equals(projeto.toUpperCase())) {
-                somaMinutos += stringParaMinutos(linhaPlanilha.get(i).getHorasTrabalhadas());
-            }
-        }
-        return somaMinutos;
-    }
-
-    public static Integer somarHorasFuncionarioProjeto(List<Valores> linhaPlanilha, String funcionario, String projeto) {
-        int somaMinutos = 0;
-        for (int i = 0; i < linhaPlanilha.size(); i++) {
-            if (linhaPlanilha.get(i).getProjeto().toUpperCase().equals(projeto.toUpperCase()) && linhaPlanilha.get(i).getFuncionario().toUpperCase().equals(funcionario.toUpperCase())) {
-                somaMinutos += stringParaMinutos(linhaPlanilha.get(i).getHorasTrabalhadas());
-            }
-        }
-        return somaMinutos;
-    }
-
-    public static String minutosParaHoras(Integer minutos) {
-        return LocalTime.MIN.plus(Duration.ofMinutes(minutos)).toString();
-    }
-    
-    public static String decimalFormat(Double num){
+    public static String decimalComDuasCasas(Double num) {
         DecimalFormat df = new DecimalFormat("0.00");
         return df.format(num);
     }
@@ -108,5 +128,5 @@ public class Utils {
         dataFormatada = Utils.dateFormat(data);
         return dataFormatada;
     }
-    
+
 }
