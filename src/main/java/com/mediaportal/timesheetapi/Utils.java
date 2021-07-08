@@ -21,16 +21,6 @@ import org.apache.poi.hssf.usermodel.HSSFDateUtil;
  */
 public class Utils {
     
-    public static int getDateAno(Date date) {
-        int ano = date.getYear();
-        return ano;
-    }
-    
-    public static int getDateMes(Date date) {
-        int mes = date.getMonth();
-        return mes;
-    }
-    
     public static String dateFormat(Date date) {
         SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");
         return formatador.format(date);
@@ -55,8 +45,8 @@ public class Utils {
         }
         return funcionario;
     }
-
-    public static Integer somarHorasFuncionario(List<Valores> linhaPlanilha, String nomeFuncionario) {
+    
+    public static Integer somarHorasFuncionario(List<Valores> linhaPlanilha, String nomeFuncionario) {  
         int somaMinutos = 0;
         for (int i = 0; i < linhaPlanilha.size(); i++) {
             if (linhaPlanilha.get(i).getFuncionario().toUpperCase().equals(nomeFuncionario.toUpperCase())) {
@@ -110,7 +100,13 @@ public class Utils {
         int soma = horaMinuto + minutos;
         return soma;
     }
-    
-    
 
+    public static String formatDoubleToDate(Double doubleData) {
+        Date data;
+        String dataFormatada;
+        data = HSSFDateUtil.getJavaDate(doubleData);
+        dataFormatada = Utils.dateFormat(data);
+        return dataFormatada;
+    }
+    
 }

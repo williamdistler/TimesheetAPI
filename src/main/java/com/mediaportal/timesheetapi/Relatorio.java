@@ -5,6 +5,10 @@
  */
 package com.mediaportal.timesheetapi;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -32,25 +36,29 @@ public class Relatorio {
         }
     }
 
-    public static String geraRelatorio(List<Valores> lista) {
+    public static String geraRelatorio(List<Valores> lista, String dataVigente, String dataPlanilha) {
         Set<String> funcionario = Utils.carregaFuncionarios(lista);
         Set<String> projeto = Utils.carregaProjetos(lista);
-
+        Integer ano = Integer.parseInt(dataVigente.substring(0, 4));
+        Integer mes = Integer.parseInt(dataVigente.substring(4));
+        Integer anoPlanilha = Integer.parseInt(dataPlanilha.substring(5));
+        Integer mesPlanilha = Integer.parseInt(dataPlanilha.substring(2, 4));
         String resultado = "";
+        if (ano == anoPlanilha && mes == mesPlanilha) {
+            resultado += "-------Funcionários------" + System.lineSeparator();
+            resultado = funcionario.stream().map((func) -> func + ": " + Utils.somarHorasFuncionario(lista, func)/60.0 + " horas trabalhadas no total" + System.lineSeparator()).reduce(resultado, String::concat);
 
-        resultado += "-------Funcionários------" + System.lineSeparator();
-        resultado = funcionario.stream().map((func) -> func + ": " + Utils.somarHorasFuncionario(lista, func)/60.0 + " horas trabalhadas no total" + System.lineSeparator()).reduce(resultado, String::concat);
+            resultado += System.lineSeparator() + "---------Projetos--------" + System.lineSeparator();
+            resultado = projeto.stream().map((proj) -> proj + ": " + Utils.somarHorasProjeto(lista, proj)/60.0 + " horas de projeto no total" + System.lineSeparator()).reduce(resultado, String::concat);
 
-        resultado += System.lineSeparator() + "---------Projetos--------" + System.lineSeparator();
-        resultado = projeto.stream().map((proj) -> proj + ": " + Utils.somarHorasProjeto(lista, proj)/60.0 + " horas de projeto no total" + System.lineSeparator()).reduce(resultado, String::concat);
+            resultado += System.lineSeparator() + "---------Warnings--------" + System.lineSeparator();
+            resultado = warnings.stream().map((warn) -> warn + System.lineSeparator()).reduce(resultado, String::concat);
 
-        resultado += System.lineSeparator() + "---------Warnings--------" + System.lineSeparator();
-        resultado = warnings.stream().map((warn) -> warn + System.lineSeparator()).reduce(resultado, String::concat);
-
-        resultado += System.lineSeparator() + "-----------ERROS----------" + System.lineSeparator();
-        resultado = errors.stream().map((erro) -> erro + System.lineSeparator()).reduce(resultado, String::concat);
+            resultado += System.lineSeparator() + "-----------ERROS----------" + System.lineSeparator();
+            resultado = errors.stream().map((erro) -> erro + System.lineSeparator()).reduce(resultado, String::concat);
         
-        return resultado;
+            return resultado;
+        }
 
     }
 

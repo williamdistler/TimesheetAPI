@@ -23,15 +23,6 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class Planilha {
-    
-    File arquivo = new File("C:\\Users\\Media Portal\\Desktop\\Planilhas\\config.txt");
-        
-    public static String verificaData(File arquivo) throws FileNotFoundException, IOException {
-        BufferedReader br = new BufferedReader(new FileReader(arquivo));
-        String data = br.readLine();
-        //System.out.println(data);
-        return data;
-    }
 
     public List<Valores> carregaValoresDoExcelEmLista(String path) throws IOException {
 
@@ -136,7 +127,7 @@ public class Planilha {
             String totalDia = Utils.getHorasHHMM(lerCelulaDouble(sheet, numeroDeLinhas, coluna));
             Integer horas = Integer.parseInt(totalDia.split(":")[0]);
             if (doubleData != null && horas <= 2 || horas >= 10) {
-                Relatorio.warnings.add("No dia " + formataData(doubleData) + ", o funcionario " + nomeFuncionario + " trabalhou " + totalDia + " horas!");
+                Relatorio.warnings.add("No dia " + Utils.formatDoubleToDate(doubleData) + ", o funcionario " + nomeFuncionario + " trabalhou " + totalDia + " horas!");
             }
         }
 
@@ -151,18 +142,10 @@ public class Planilha {
         String dataFormatada = "";
         
         try {
-            int mes = Integer.parseInt(verificaData(arquivo).substring(4));
-            int ano = Integer.parseInt(verificaData(arquivo).substring(0, 4));
-            dataFormatada = formataData(doubleData);
-            int mesPlanilha = getDateMes(doubleData);
-            int anoPlanilha = getDateAno(doubleData);
-            if(!mes.equals(mesPlanilha) || !ano.equals(anoPlanilha))
-                throw new Exeption();
-            else
-                continue;
+            dataFormatada = Utils.formatDoubleToDate(doubleData);
         } catch (Exception e) {
             Relatorio.errors.add("Data inválida ");
-            return null;
+            return Collections.emptyList();
         }
 
         String horasTrabalhadas = Utils.getHorasHHMM(doubleHorasTrabalhadas);
@@ -175,14 +158,6 @@ public class Planilha {
         listaDeValoresDoExcel.add(valores);
         return listaDeValoresDoExcel;
         //System.out.println("FUNC: " + valores.getFuncionario() + "DATA: " + valores.getData() + " HORAS: " + valores.getHorasTrabalhadas() + " " + valores.getIdProjeto() + " " + valores.getProjeto());
-    }
-
-    private String formataData(Double doubleData) {
-        Date data;
-        String dataFormatada;
-        data = HSSFDateUtil.getJavaDate(doubleData);
-        dataFormatada = Utils.dateFormat(data);
-        return dataFormatada;
     }
 
     @Deprecated
