@@ -1,0 +1,42 @@
+-------Funcionários------
+William: 95,50 horas trabalhadas no total
+
+
+---------Projetos--------
+ADMIN: 26,50 horas de projeto no total
+SUA134: 2,00 horas de projeto no total
+MXP100: 16,00 horas de projeto no total
+SUA110: 51,00 horas de projeto no total
+
+
+---------Projetos/Funcionario--------
+William/ADMIN: 26,50
+William/SUA134: 2,00
+William/MXP100: 16,00
+William/SUA110: 51,00
+
+
+---------Warnings--------
+No dia 03/06/2021, o funcionario William trabalhou 1:0 horas. Arquivo: Timesheet - William - 20210531.xls
+No dia 04/06/2021, o funcionario William trabalhou 1:0 horas. Arquivo: Timesheet - William - 20210531.xls
+No dia 11/06/2021, o funcionario William trabalhou 1:30 horas. Arquivo: Timesheet - William - 20210607.xls
+No dia 18/06/2021, o funcionario William trabalhou 0:30 horas. Arquivo: Timesheet - William - 20210614.xls
+No dia 29/06/2021, o funcionario William trabalhou 1:0 horas. Arquivo: Timesheet - William - 20210628.xls
+
+
+-----------ERROS----------
+Relatório com formato inválido: Relatório Semanal - William - 20210503.xlsx
+Relatório com formato inválido: Relatório Semanal - William - 20210504.xlsx
+Relatório com formato inválido: Relatório Semanal - William - 20210510.xlsx
+Relatório com formato inválido: Relatório Semanal - William - 20210517.xlsx
+Relatório com formato inválido: Relatório Semanal - William - 20210524.xlsx
+Relatório com formato inválido: Relatório Semanal - William - 20210531.xlsx
+Relatório com formato inválido: Relatório Semanal - William - 20210607.xlsx
+Relatório com formato inválido: Relatório Semanal - William - 20210614.xlsx
+Relatório com formato inválido: Relatório Semanal - William - 20210621.xlsx
+Relatório com formato inválido: Relatório Semanal - William - 20210628.xlsx
+Relatório com formato inválido: Relatório Semanal - William - 20210705.xlsx
+Relatório com formato inválido: Relatório Semanal - William - 20210712.xlsx
+Relatório com formato inválido: Relatório Semanal - William - 20211204.xlsx
+Relatório com formato inválido: Relatório Semanal - William - 20211904.xlsx
+Relatório com formato inválido: Relatório Semanal - William - 20212604.xlsx

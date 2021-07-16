@@ -1,12 +1,21 @@
 package com.mediaportal.timesheetapi;
 
 class Valores {
-
+    
+    private String nomeArquivo;
     private String funcionario;
     private String data;
     private String horasTrabalhadas;
     private String idProjeto;
     private String projeto;
+    
+    public String getNomeArquivo() {
+        return nomeArquivo;
+    }
+    
+    public void setNomeArquivo(String nomeArquivo) {
+        this.nomeArquivo = nomeArquivo;
+    }
     
     public String getFuncionario() {
         return funcionario;

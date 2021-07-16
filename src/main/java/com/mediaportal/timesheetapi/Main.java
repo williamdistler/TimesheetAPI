@@ -13,24 +13,16 @@ import java.util.logging.Logger;
 
 public class Main {
 
-    File arquivo = new File("C:\\Users\\Media Portal\\Desktop\\Planilhas\\config.txt");
-
-    public String verificaData(File arquivo) throws FileNotFoundException, IOException {
-        BufferedReader br = new BufferedReader(new FileReader(arquivo));
-        String data = br.readLine();
-        //System.out.println(data);
-        return data;
-    }
-
     public static void main(String[] args) throws FileNotFoundException, IOException {
-
+        
+        File arquivo = new File("config.txt");
+        System.out.println(arquivo.getAbsolutePath());
         Planilha planilha = new Planilha();
         Main main = new Main();
-
-        File folder = new File("C:\\Users\\Media Portal\\Desktop\\Planilhas\\");
+        String arquivos = (String) main.extraiMesEPastaDesejada(arquivo.getAbsolutePath()).substring(6);
+        File folder = new File(arquivos);
         File[] files = folder.listFiles();
         List<Valores> teste = new ArrayList();
-
         for (File file : files) {
             if (verificaExtensao(file)) {
                 try {
@@ -43,7 +35,7 @@ public class Main {
 
         }
         
-        String data = main.verificaData(main.arquivo);
+        String data = main.extraiMesDesejado(main.arquivo);
         
         //teste.forEach(x -> System.out.println("Data " + x.getData() + " Func " + x.getFuncionario()));
         //Falta conseguir fornecer pra main a data da planilha, para poder gerar o relatório
@@ -60,6 +52,12 @@ public class Main {
 
     private static boolean verificaExtensao(File file) {
         return FilenameUtils.getExtension(file.getName()).toLowerCase().equals("xls") || FilenameUtils.getExtension(file.getName()).toLowerCase().equals("xlsx");
+    }
+
+    private String extraiMesEPastaDesejada(String arquivo) throws FileNotFoundException, IOException {
+        BufferedReader br = new BufferedReader(new FileReader(arquivo));
+        String dados = br.readLine();
+        return dados; //To change body of generated methods, choose Tools | Templates.
     }
 
 }

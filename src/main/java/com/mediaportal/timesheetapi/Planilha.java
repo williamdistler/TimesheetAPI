@@ -27,11 +27,14 @@ public class Planilha {
 
         File file = new File(path);
         FileInputStream reader = new FileInputStream(file);
+        Valores valores = new Valores();
         Workbook wb = null;
         String extension = FilenameUtils.getExtension(path);
         
         String filename = FilenameUtils.getName(path);
-
+        
+        valores.setNomeArquivo(filename);
+        
         if (extension.toUpperCase().equals("XLS")) {
             try {
                 wb = new HSSFWorkbook(reader);
@@ -50,7 +53,7 @@ public class Planilha {
         }
         Sheet sheet = wb.getSheetAt(0);
         
-        int numLinhaInicialExcel = getLinhasInicalDoExcel(sheet);
+        int numLinhaInicialExcel = getLinhasInicialDoExcel(sheet);
         int numLinhaFinalExcel = getLinhasFinalDoExcel(sheet);
 
         if (numLinhaFinalExcel == 0 || numLinhaInicialExcel == 0) {
@@ -128,7 +131,7 @@ public class Planilha {
         //System.out.println("FUNC: " + valores.getFuncionario() + "DATA: " + valores.getData() + " HORAS: " + valores.getHorasTrabalhadas() + " " + valores.getIdProjeto() + " " + valores.getProjeto());
     }
 
-    private int getLinhasInicalDoExcel(Sheet sheet) throws IOException {
+    private int getLinhasInicialDoExcel(Sheet sheet) throws IOException {
         int linhaAtual = 0;
         String valorDaCelula = "";
         int numeroDeLinhas = 0;
